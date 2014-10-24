@@ -32,7 +32,7 @@ uint32_t pwmFreq = 25000;
 int8_t tmpPin = 0;
 volatile float tmpVoltage;
 volatile float tmpCelsius;
-uint8_t tmpMin = 35; // °C
+uint8_t tmpMin = 30; // °C
 
 int8_t statePin = 3;
 volatile int8_t state = HIGH;
@@ -89,6 +89,10 @@ void loop() {
 		}
 
 		if (tmpCelsius <= tmpMin && fanRun) {
+			do {
+				delay(5000);
+			} while (tmpCelsius > tmpMin && fanRun);
+
 			ps3On();
 			Serial.println("Fan stop");
 		}
